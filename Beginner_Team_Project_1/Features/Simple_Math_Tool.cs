@@ -1,123 +1,128 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Beginner_Team_Project_1.Features {
-    internal class Simple_Math_Tool {
+namespace BeginnerTeamProject1.Features {
+    internal class SimpleMathTool {
         // This class provides a simple math tool that can perform basic arithmetic operations.
 
-
-        //Services
-        private double basic_calculator(double a, double b, string operation) {
-            switch (operation) {
+        private double BasicCalculator(double firstNumber, double secondNumber, string operation) {
+            switch (operation.ToLower()) {
                 case "add":
-                    return a + b;
+                    return firstNumber + secondNumber;
                 case "subtract":
-                    return a - b;
+                    return firstNumber - secondNumber;
                 case "multiply":
-                    return a * b;
+                    return firstNumber * secondNumber;
                 case "divide":
-                    if (b != 0) {
-                        return a / b;
-                    }
-                    else {
+                    if (secondNumber == 0) {
                         throw new DivideByZeroException("Cannot divide by zero.");
                     }
+                    return firstNumber / secondNumber;
                 default:
-                    throw new InvalidOperationException("Invalid operation.");
+                    throw new InvalidOperationException("Invalid operation specified.");
             }
         }
 
-        private double square_root(double a) {
-            if (a < 0) {
-                throw new ArgumentException("Cannot calculate the square root of a negative number.");
+        private double CalculateSquareRoot(double number) {
+            if (number < 0) {
+                throw new ArgumentException("Cannot calculate square root of negative number.");
             }
-            return Math.Sqrt(a);
+            return Math.Sqrt(number);
         }
 
-        private int factorial(int n) {
-            if (n < 0) {
-                throw new ArgumentException("Cannot calculate the factorial of a negative number.");
+        private int CalculateFactorial(int number) {
+            if (number < 0) {
+                throw new ArgumentException("Factorial is not defined for negative numbers.");
             }
-            if (n == 0 || n == 1) {
+
+            if (number == 0 || number == 1) {
                 return 1;
             }
+
             int result = 1;
-            for (int i = 2; i <= n; i++) {
+            for (int i = 2; i <= number; i++) {
                 result *= i;
             }
             return result;
         }
 
-
-
-        // Main method to run the Simple Math Tool
         public static void Run() {
             Console.WriteLine("Welcome to the Simple Math Tool!");
-            Simple_Math_Tool mathTool = new Simple_Math_Tool();
-            while (true) {
-                Console.WriteLine("Choose an operation:");
-                Console.WriteLine("1. Basic Calculator (add, subtract, multiply, divide)");
-                Console.WriteLine("2. Square Root");
-                Console.WriteLine("3. Factorial");
-                Console.WriteLine("0. Main Menu");
-                Console.Write("Enter your choice (0-3): ");
-                string choice = Console.ReadLine();
+            var mathTool = new SimpleMathTool();
 
-            
+            while (true) {
+                DisplayMenu();
+                var choice = Console.ReadLine();
+
                 switch (choice) {
                     case "0":
                         Console.WriteLine("Returning to main menu...");
-                        return; 
+                        return;
                     case "1":
-                        Console.Write("Enter first number: ");
-                        double a = Convert.ToDouble(Console.ReadLine());
-                        Console.Write("Enter second number: ");
-                        double b = Convert.ToDouble(Console.ReadLine());
-                        Console.Write("Enter operation (add, subtract, multiply, divide): ");
-                        string operation = Console.ReadLine().ToLower();
-                        try {
-                            double result = mathTool.basic_calculator(a, b, operation);
-                            Console.WriteLine($"Result: {result}");
-                        }
-                        catch (Exception ex) {
-                            Console.WriteLine($"Error: {ex.Message}");
-                        }
+                        HandleBasicCalculator(mathTool);
                         break;
                     case "2":
-                        Console.Write("Enter number to find square root: ");
-                        double num = Convert.ToDouble(Console.ReadLine());
-                        try {
-                            double sqrtResult = mathTool.square_root(num);
-                            Console.WriteLine($"Square Root: {sqrtResult}");
-                        }
-                        catch (Exception ex) {
-                            Console.WriteLine($"Error: {ex.Message}");
-                        }
+                        HandleSquareRoot(mathTool);
                         break;
                     case "3":
-                        Console.Write("Enter a non-negative integer for factorial: ");
-                        int n = Convert.ToInt32(Console.ReadLine());
-                        try {
-                            int factResult = mathTool.factorial(n);
-                            Console.WriteLine($"Factorial of {n} is {factResult}");
-                        }
-                        catch (Exception ex) {
-                            Console.WriteLine($"Error: {ex.Message}");
-                        }
+                        HandleFactorial(mathTool);
                         break;
                     default:
-                        Console.WriteLine("Invalid choice. Please select 1, 2, or 3.");
+                        Console.WriteLine("Invalid choice. Please select 0-3.");
                         break;
-
-
-
-
                 }
             }
         }
-            
+
+        private static void DisplayMenu() {
+            Console.WriteLine("\nChoose an operation:");
+            Console.WriteLine("1. Basic Calculator (add, subtract, multiply, divide)");
+            Console.WriteLine("2. Square Root");
+            Console.WriteLine("3. Factorial");
+            Console.WriteLine("0. Main Menu");
+            Console.Write("Enter your choice (0-3): ");
+        }
+
+        private static void HandleBasicCalculator(SimpleMathTool mathTool) {
+            try {
+                Console.Write("Enter first number: ");
+                var firstNumber = Convert.ToDouble(Console.ReadLine());
+                Console.Write("Enter second number: ");
+                var secondNumber = Convert.ToDouble(Console.ReadLine());
+                Console.Write("Enter operation (add, subtract, multiply, divide): ");
+                var operation = Console.ReadLine();
+
+                var result = mathTool.BasicCalculator(firstNumber, secondNumber, operation);
+                Console.WriteLine($"Result: {result}");
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        private static void HandleSquareRoot(SimpleMathTool mathTool) {
+            try {
+                Console.Write("Enter number to find square root: ");
+                var number = Convert.ToDouble(Console.ReadLine());
+                var result = mathTool.CalculateSquareRoot(number);
+                Console.WriteLine($"Square Root: {result}");
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        private static void HandleFactorial(SimpleMathTool mathTool) {
+            try {
+                Console.Write("Enter a non-negative integer for factorial: ");
+                var number = Convert.ToInt32(Console.ReadLine());
+                var result = mathTool.CalculateFactorial(number);
+                Console.WriteLine($"Factorial of {number} is {result}");
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
     }
-}// End of Simple_Math_Tool.cs
+}
