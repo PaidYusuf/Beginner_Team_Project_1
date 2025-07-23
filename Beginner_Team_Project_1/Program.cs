@@ -33,7 +33,7 @@ namespace Beginner_Team_Project_1 {
                         break;
                     case "3":
                         Console.Clear();
-                        //Simple_Math_Tool.Run();
+                        Simple_Math_Tool.Run();
                         break;
                     case "4":
                         Console.Clear();
@@ -52,7 +52,6 @@ namespace Beginner_Team_Project_1 {
                 }
             }
 
-            Console.ReadKey();
 
         }
     }
