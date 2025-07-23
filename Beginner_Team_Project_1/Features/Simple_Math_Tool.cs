@@ -6,5 +6,6 @@ using System.Threading.Tasks;
 
 namespace Beginner_Team_Project_1.Features {
     internal class Simple_Math_Tool {
+
     }
 }
